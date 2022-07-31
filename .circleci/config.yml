@@ -26,10 +26,29 @@ jobs:
       - run:
           name: 'Run Tests'
           command: yarn test
+  nestjs:
+    working_directory: ~/github-actions/backend
+    docker:
+      - image: cimg/node:18.7.0
+    steps:
+      - checkout:
+          path: ~/github-actions
+      - run:
+          name: 'Install Dependencies'
+          command: yarn install --frozen-lockfile
+      - run:
+          name: 'Run Linting'
+          command: yarn lint
+      - run:
+          name: 'Run Tests'
+          command: yarn test
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  angular-test-workflow:
+  angular-ci-workflow:
     jobs:
       - angular
+  nestjs-ci-workflow:
+    jobs:
+      - nestjs
