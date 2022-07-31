@@ -42,18 +42,33 @@ version: 2.1
 #     name: 'Run Tests'
 #     command: yarn test
 
-ci:
-  - checkout:
-      path: ~/github-actions
-  - run:
-      name: 'Install Dependencies'
-      command: yarn install --frozen-lockfile
-  - run:
-      name: 'Run Linting'
-      command: yarn lint
-  - run:
-      name: 'Run Tests'
-      command: yarn test
+# commands:
+#   ci:
+#     - checkout:
+#         path: ~/github-actions
+#     - run:
+#         name: 'Install Dependencies'
+#         command: yarn install --frozen-lockfile
+#     - run:
+#         name: 'Run Linting'
+#         command: yarn lint
+#     - run:
+#         name: 'Run Tests'
+#         command: yarn test
+
+definitions:
+  steps: &ci
+    - checkout:
+        path: ~/github-actions
+    - run:
+        name: 'Install Dependencies'
+        command: yarn install --frozen-lockfile
+    - run:
+        name: 'Run Linting'
+        command: yarn lint
+    - run:
+        name: 'Run Tests'
+        command: yarn test
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
