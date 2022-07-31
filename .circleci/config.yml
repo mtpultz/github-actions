@@ -16,6 +16,34 @@ aliases:
     name: 'Run Tests'
     command: yarn test
 
+# TODO add in caching that works with multiple apps in repo
+# - restore_cache:
+#     name: Restore Yarn Package Cache
+#     keys:
+#       - yarn-packages-{{ checksum "yarn.lock" }}
+# - run:
+#     name: 'Install Dependencies'
+#     command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+# - save_cache:
+#     name: Save Yarn Package Cache
+#     key: yarn-packages-{{ checksum "yarn.lock" }}
+#     paths:
+#       - ~/.cache/yarn
+
+
+# - checkout:
+#     path: ~/github-actions
+# - run:
+#     name: 'Install Dependencies'
+#     command: yarn install --frozen-lockfile
+# - run:
+#     name: 'Run Linting'
+#     command: yarn lint
+# - run:
+#     name: 'Run Tests'
+#     command: yarn test
+
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -30,18 +58,24 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - *checkout
-      - run: *install
-      - run: *linting
-      - run: *testing
+      - run:
+          *install
+      - run:
+          *linting
+      - run:
+          *testing
   nestjs:
     working_directory: ~/github-actions/backend
     docker:
       - image: cimg/node:18.7.0
     steps:
       - *checkout
-      - run: *install
-      - run: *linting
-      - run: *testing
+      - run:
+          *install
+      - run:
+          *linting
+      - run:
+          *testing
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
