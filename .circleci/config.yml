@@ -19,7 +19,7 @@ jobs:
           path: ~/github-actions
       - run:
           name: 'Install Dependencies'
-          command: yarn ci
+          command: yarn install --frozen-lockfile
       - run:
           name: 'Run Linting'
           command: yarn lint
