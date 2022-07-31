@@ -2,6 +2,20 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+aliases:
+  - &checkout
+    checkout:
+      path: ~/github-actions
+  - &install
+    name: 'Install Dependencies'
+    command: yarn install --frozen-lockfile
+  - &linting
+    name: 'Run Linting'
+    command: yarn lint
+  - &tests
+    name: 'Run Tests'
+    command: yarn test
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -15,33 +29,19 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
-      - checkout:
-          path: ~/github-actions
-      - run:
-          name: 'Install Dependencies'
-          command: yarn install --frozen-lockfile
-      - run:
-          name: 'Run Linting'
-          command: yarn lint
-      - run:
-          name: 'Run Tests'
-          command: yarn test
+      - *checkout
+      - run: *install
+      - run: *linting
+      - run: *testing
   nestjs:
     working_directory: ~/github-actions/backend
     docker:
       - image: cimg/node:18.7.0
     steps:
-      - checkout:
-          path: ~/github-actions
-      - run:
-          name: 'Install Dependencies'
-          command: yarn install --frozen-lockfile
-      - run:
-          name: 'Run Linting'
-          command: yarn lint
-      - run:
-          name: 'Run Tests'
-          command: yarn test
+      - *checkout
+      - run: *install
+      - run: *linting
+      - run: *testing
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
