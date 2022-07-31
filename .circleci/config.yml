@@ -6,8 +6,7 @@ version: 2.1
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   angular:
-    # Doesn't do what I thought it would...
-    # working_directory: ~/frontend
+    working_directory: ~/github-actions/frontend
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -17,8 +16,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: 'Where am I?'
+          command: ls
+      - run:
           name: 'Change Directory'
-          command: cd frontend
+          command: cd ./frontend
       - run:
           name: 'Install Dependencies'
           command: yarn ci
