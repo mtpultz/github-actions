@@ -2,30 +2,30 @@ version: 2.1
 
 definitions:
   jobs:
-    - docker: &docker
-        - image: cimg/node:18.7.0
-    - step: &ci
-        - checkout:
-            path: ~/github-actions
-        - run:
-            name: Install Dependencies
-            command: yarn install --frozen-lockfile
-        - run:
-            name: Run Linting
-            command: yarn lint
-        - run:
-            name: Run Tests
-            command: yarn test
+    docker: &docker
+      - image: cimg/node:18.7.0
+    steps: &steps
+      - checkout:
+          path: ~/github-actions
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - run:
+          name: Run Linting
+          command: yarn lint
+      - run:
+          name: Run Tests
+          command: yarn test
 
 jobs:
   angular:
     working_directory: ~/github-actions/frontend
     docker: *docker
-    steps: *ci
+    steps: *steps
   nestjs:
     working_directory: ~/github-actions/backend
     docker: *docker
-    steps: *ci
+    steps: *steps
 
 workflows:
   angular-ci-workflow:
