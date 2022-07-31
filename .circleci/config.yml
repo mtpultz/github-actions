@@ -1,97 +1,32 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-# aliases:
-#   - &checkout
-#     checkout:
-#       path: ~/github-actions
-#   - &install
-#     name: 'Install Dependencies'
-#     command: yarn install --frozen-lockfile
-#   - &linting
-#     name: 'Run Linting'
-#     command: yarn lint
-#   - &tests
-#     name: 'Run Tests'
-#     command: yarn test
-
-# TODO add in caching that works with multiple apps in repo
-# - restore_cache:
-#     name: Restore Yarn Package Cache
-#     keys:
-#       - yarn-packages-{{ checksum "yarn.lock" }}
-# - run:
-#     name: 'Install Dependencies'
-#     command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-# - save_cache:
-#     name: Save Yarn Package Cache
-#     key: yarn-packages-{{ checksum "yarn.lock" }}
-#     paths:
-#       - ~/.cache/yarn
-
-# - checkout:
-#     path: ~/github-actions
-# - run:
-#     name: 'Install Dependencies'
-#     command: yarn install --frozen-lockfile
-# - run:
-#     name: 'Run Linting'
-#     command: yarn lint
-# - run:
-#     name: 'Run Tests'
-#     command: yarn test
-
-# commands:
-#   ci:
-#     - checkout:
-#         path: ~/github-actions
-#     - run:
-#         name: 'Install Dependencies'
-#         command: yarn install --frozen-lockfile
-#     - run:
-#         name: 'Run Linting'
-#         command: yarn lint
-#     - run:
-#         name: 'Run Tests'
-#         command: yarn test
-
 definitions:
-  steps:
+  jobs:
+    - docker: &docker
+        - image: cimg/node:18.7.0
     - step: &ci
         - checkout:
             path: ~/github-actions
         - run:
-            name: 'Install Dependencies'
+            name: Install Dependencies
             command: yarn install --frozen-lockfile
         - run:
-            name: 'Run Linting'
+            name: Run Linting
             command: yarn lint
         - run:
-            name: 'Run Tests'
+            name: Run Tests
             command: yarn test
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   angular:
-    # In which directory to run the steps:
     working_directory: ~/github-actions/frontend
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/node:18.7.0
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    docker: *docker
     steps: *ci
   nestjs:
     working_directory: ~/github-actions/backend
-    docker:
-      - image: cimg/node:18.7.0
+    docker: *docker
     steps: *ci
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   angular-ci-workflow:
     jobs:
