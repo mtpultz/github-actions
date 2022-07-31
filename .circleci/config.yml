@@ -16,6 +16,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: 'Where am I?'
+          command: ls
+      - run:
+          name: 'Where am I?'
+          command: cwd
+      - run:
           name: 'Install Dependencies'
           command: yarn ci
       - run:
