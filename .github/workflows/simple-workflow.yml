@@ -1,28 +1,51 @@
-# This is a basic workflow to help you get started with Actions
+# GitHub Actions
+# @see https://docs.github.com/en/actions
 
+# Name of the workflow should be descriptive since
+# you can have multiple workflows in a single project
 name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: ['main']
+  # Can trigger the workflow based on GitHub Events, such as
+  # push, pull request, commit, release, deployment, etc. Can
+  # also use Scheduled Events (schedule), or external events
+  # to trigger a GitHub Event (repository_dispatch).
+  push: # Push event
+    branches:
+      - main # Only for main branch
+    tags:
+      - v1 # Only commits pushed to the v1 tag
+    paths:
+      - 'test/*' # Only files in the test directory
   pull_request:
-    branches: ['develop']
+    branches: ['main', 'develop']
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allows you to run this workflow manually from
+  # the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow is made up of one or more jobs that
+# can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
+    # The type of runner that the job will run on. The
+    # type of runner can be GitHub hosted or self-hosted.
+    # When a GitHub hosted runner is used each job runs
+    # in a fresh instance of a virtual environment.
+    # Self-hosted runners are highly configurable vs the
+    # GitHub hosted runners
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # Steps represent a sequence of tasks that will be
+    # executed as part of the job. A step is an individual
+    # task that can run commands or actions. Each step in a
+    # job executes on the same runner allowing steps w/in
+    # a job to share information.
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Standard action that checks-out your repository
+      # under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
